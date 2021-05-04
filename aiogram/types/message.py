@@ -2085,6 +2085,7 @@ class Message(base.TelegramObject):
         chat_id: typing.Union[str, int],
         disable_notification: typing.Optional[bool] = None,
         disable_web_page_preview: typing.Optional[bool] = None,
+        parse_mode: typing.Optional[base.String] = None,
         reply_to_message_id: typing.Optional[int] = None,
         reply_markup: typing.Union[
             InlineKeyboardMarkup, ReplyKeyboardMarkup, None
@@ -2096,6 +2097,9 @@ class Message(base.TelegramObject):
         :param chat_id:
         :param disable_notification:
         :param disable_web_page_preview: for text messages only
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic,
+            fixed-width text or inline URLs in your bot's message.
+        :type parse_mode: :obj:`typing.Union[base.String, None]`
         :param reply_to_message_id:
         :param reply_markup:
         :return:
@@ -2103,11 +2107,11 @@ class Message(base.TelegramObject):
         kwargs = {
             "chat_id": chat_id,
             "reply_markup": reply_markup or self.reply_markup,
-            "parse_mode": ParseMode.HTML,
+            "parse_mode": parse_mode or ParseMode.HTML,
             "disable_notification": disable_notification,
             "reply_to_message_id": reply_to_message_id,
         }
-        text = self.html_text if (self.text or self.caption) else None
+        text = self.text or self.caption
 
         if self.text:
             kwargs["disable_web_page_preview"] = disable_web_page_preview
